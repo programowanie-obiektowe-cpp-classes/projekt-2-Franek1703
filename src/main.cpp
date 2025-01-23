@@ -1,6 +1,9 @@
-#include "PrintHello.hpp"
+#include <day1.hpp>
+#include <iostream>
+#include <filesystem>
+
 
 int main()
 {
-    printHello();
+    solveDay1("../src/input1.txt");
 }
