@@ -13,7 +13,12 @@ int Day3::computeResult(const std::vector<std::pair<int, int>> &instructions) {
 
 void Day3::solve(const std::string& inputFile) {
         std::vector<std::pair<int, int>> instructions;
+        std::vector<std::pair<int, int>> instructions2;
         InputParser::parseInputDay3(inputFile, instructions);
         int result = computeResult(instructions);
         std::cout << "The sum of all valid mul results is: " << result << std::endl;
+
+        InputParser::parseInputDay3Part2(inputFile, instructions2);
+        int result2 = computeResult(instructions2);
+        std::cout << "The sum of all valid mul results for part 2 is: " << result2 << std::endl;
 }
