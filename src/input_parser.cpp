@@ -65,7 +65,7 @@ void InputParser::parseInputDay3(const std::string& inputFile, std::vector< std:
 }
 
 void InputParser::parseInputDay3Part2(const std::string&                    inputFile,
-                                      std::vector<std::pair<int,int>>&      validInstructions)
+                                      std::vector< std::pair< int, int > >& validInstructions)
 {
     std::ifstream file(inputFile);
     if (!file)
@@ -77,7 +77,7 @@ void InputParser::parseInputDay3Part2(const std::string&                    inpu
     buffer << file.rdbuf();
     std::string input = buffer.str();
 
-    std::regex mainRegex(R"((do\(\)|don't\(\)|mul\(\d{1,3},\d{1,3}\)))");
+    std::regex  mainRegex(R"((do\(\)|don't\(\)|mul\(\d{1,3},\d{1,3}\)))");
     std::smatch match;
 
     bool isEnabled = true;
@@ -97,7 +97,7 @@ void InputParser::parseInputDay3Part2(const std::string&                    inpu
             auto commaPos = inside.find(',');
             if (commaPos != std::string::npos)
             {
-                std::string first = inside.substr(0, commaPos);
+                std::string first  = inside.substr(0, commaPos);
                 std::string second = inside.substr(commaPos + 1);
 
                 try
@@ -108,7 +108,6 @@ void InputParser::parseInputDay3Part2(const std::string&                    inpu
                     if (isEnabled)
                     {
                         validInstructions.emplace_back(x, y);
-
                     }
                     else
                     {
@@ -135,4 +134,60 @@ void InputParser::parseInputDay3Part2(const std::string&                    inpu
 
         searchStart = match.suffix().first;
     }
+}
+
+void InputParser::parseInputDay4(const std::string& inputFile, std::vector< std::string >& grid)
+{
+    std::ifstream file(inputFile);
+    if (!file)
+    {
+        throw std::runtime_error("Could not open file: " + inputFile);
+    }
+    std::string line;
+    while (std::getline(file, line))
+    {
+        grid.push_back(line);
+    }
+    file.close();
+}
+
+std::pair< std::unordered_map< int, std::unordered_set< int > >, std::vector< std::vector< int > > >
+InputParser::parseInputDay5(const std::string& filename)
+{
+    std::ifstream file(filename);
+    if (!file)
+    {
+        throw std::runtime_error("Could not open file: " + filename);
+    }
+    std::string line;
+
+    std::unordered_map< int, std::unordered_set< int > > rules;
+    std::vector< std::vector< int > >                    updates;
+
+    // Parse rules
+    while (std::getline(file, line) && !line.empty())
+    {
+        std::stringstream ss(line);
+        int               x, y;
+        char              pipe;
+        ss >> x >> pipe >> y;
+        rules[x].insert(y);
+    }
+
+    // Parse updates
+    while (std::getline(file, line))
+    {
+        std::stringstream  ss(line);
+        std::vector< int > update;
+        int                page;
+        while (ss >> page)
+        {
+            if (ss.peek() == ',')
+                ss.ignore();
+            update.push_back(page);
+        }
+        updates.push_back(update);
+    }
+
+    return {rules, updates};
 }
