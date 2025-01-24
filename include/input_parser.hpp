@@ -7,7 +7,8 @@
 
 class InputParser {
 public:
-    static void parseInput(const std::string& inputFile, std::vector<int>& leftList, std::vector<int>& rightList);
+    static void parseInput(const std::string& inputFile, std::vector<std::vector<int>>& reports);
+    static void parseInputDay3(const std::string &inputFile, std::vector<std::pair<int, int>>& validInstructions);
 };
 
 #endif // INPUTPARSER_HPP
