@@ -4,6 +4,12 @@
 #include <regex>
 #include <sstream>
 
+/**
+ * @brief Parsuje dane wejściowe z pliku i zapisuje je w wektorze raportów.
+ * 
+ * @param inputFile Ścieżka do pliku wejściowego.
+ * @param reports Wektor wektorów, do którego zostaną zapisane raporty.
+ */
 void InputParser::parseInput(const std::string& inputFile, std::vector< std::vector< int > >& reports)
 {
     // Open file
@@ -31,6 +37,12 @@ void InputParser::parseInput(const std::string& inputFile, std::vector< std::vec
     }
 }
 
+/**
+ * @brief Parsuje dane wejściowe z pliku i zapisuje poprawne instrukcje w wektorze.
+ * 
+ * @param inputFile Ścieżka do pliku wejściowego.
+ * @param validInstructions Wektor par, do którego zostaną zapisane poprawne instrukcje.
+ */
 void InputParser::parseInputDay3(const std::string& inputFile, std::vector< std::pair< int, int > >& validInstructions)
 {
     // Open file
@@ -64,6 +76,12 @@ void InputParser::parseInputDay3(const std::string& inputFile, std::vector< std:
     }
 }
 
+/**
+ * @brief Parsuje dane wejściowe z pliku i zapisuje poprawne instrukcje w wektorze, uwzględniając instrukcje do() i don't().
+ * 
+ * @param inputFile Ścieżka do pliku wejściowego.
+ * @param validInstructions Wektor par, do którego zostaną zapisane poprawne instrukcje.
+ */
 void InputParser::parseInputDay3Part2(const std::string&                    inputFile,
                                       std::vector< std::pair< int, int > >& validInstructions)
 {
@@ -136,6 +154,12 @@ void InputParser::parseInputDay3Part2(const std::string&                    inpu
     }
 }
 
+/**
+ * @brief Parsuje dane wejściowe z pliku i zapisuje je w wektorze siatki.
+ * 
+ * @param inputFile Ścieżka do pliku wejściowego.
+ * @param grid Wektor stringów, do którego zostaną zapisane linie z pliku.
+ */
 void InputParser::parseInputDay4(const std::string& inputFile, std::vector< std::string >& grid)
 {
     std::ifstream file(inputFile);
@@ -151,6 +175,12 @@ void InputParser::parseInputDay4(const std::string& inputFile, std::vector< std:
     file.close();
 }
 
+/**
+ * @brief Parsuje dane wejściowe z pliku i zwraca parę zawierającą mapę reguł oraz wektor aktualizacji.
+ * 
+ * @param filename Ścieżka do pliku wejściowego.
+ * @return std::pair< std::unordered_map< int, std::unordered_set< int > >, std::vector< std::vector< int > > > Para zawierająca mapę reguł oraz wektor aktualizacji.
+ */
 std::pair< std::unordered_map< int, std::unordered_set< int > >, std::vector< std::vector< int > > >
 InputParser::parseInputDay5(const std::string& filename)
 {

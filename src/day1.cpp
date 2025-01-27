@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <vector>
 
-/// Function to compute the total distance
+/// Funkcja do obliczania całkowitej odległości
 int Day1::computeTotalDistance(std::vector< int >& leftList, std::vector< int >& rightList)
 {
     std::sort(leftList.begin(), leftList.end());
@@ -23,11 +23,12 @@ int Day1::computeTotalDistance(std::vector< int >& leftList, std::vector< int >&
     return totalDistance;
 }
 
+/// Funkcja do obliczania współczynnika podobieństwa
 int calculateSimilarityScore(const std::vector< int >& leftList, const std::vector< int >& rightList)
 {
     std::unordered_map< int, int > rightListCounts;
 
-    // Count the occurrences of each number in the right list
+    // Zlicz wystąpienia każdej liczby w prawej liście
     for (int num : rightList)
     {
         rightListCounts[num]++;
@@ -35,7 +36,7 @@ int calculateSimilarityScore(const std::vector< int >& leftList, const std::vect
 
     int similarityScore = 0;
 
-    // Calculate the similarity score by multiplying the number and its count in the right list 2D array
+    // Oblicz współczynnik podobieństwa, mnożąc liczbę przez jej liczbę wystąpień w prawej liście
     for (int num : leftList)
     {
         if (rightListCounts.find(num) != rightListCounts.end())
@@ -47,12 +48,12 @@ int calculateSimilarityScore(const std::vector< int >& leftList, const std::vect
     return similarityScore;
 }
 
-// Function to solve Day 1
+/// Funkcja do rozwiązania zadania z dnia 1
 void Day1::solveDay1(const std::string& inputFile)
 {
     std::vector< int > leftList, rightList;
 
-    // Parse input
+    // Parsowanie wejścia
     std::vector< std::vector< int > > reports;
     InputParser::parseInput(inputFile, reports);
 

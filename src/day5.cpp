@@ -3,8 +3,16 @@
 #include <iostream>
 #include <queue>
 
+/**
+ * @brief Sprawdza, czy podana kolejność aktualizacji jest zgodna z regułami.
+ * 
+ * @param rules Mapa reguł, gdzie klucz to strona, a wartość to zbiór stron, które muszą być przed nią.
+ * @param update Wektor stron do aktualizacji.
+ * @return true Jeśli kolejność jest zgodna z regułami.
+ * @return false Jeśli kolejność nie jest zgodna z regułami.
+ */
 bool Day5::isValidOrder(const std::unordered_map< int, std::unordered_set< int > >& rules,
-                        const std::vector< int >&                                   update)
+                        const std::vector< int >& update)
 {
     std::unordered_map< int, int > positions;
     for (size_t i = 0; i < update.size(); ++i)
@@ -29,6 +37,13 @@ bool Day5::isValidOrder(const std::unordered_map< int, std::unordered_set< int >
     return true;
 }
 
+/**
+ * @brief Naprawia kolejność aktualizacji stron zgodnie z regułami.
+ * 
+ * @param rules Mapa reguł, gdzie klucz to strona, a wartość to zbiór stron, które muszą być przed nią.
+ * @param update Wektor stron do aktualizacji.
+ * @return std::vector<int> Poprawiona kolejność stron.
+ */
 std::vector<int>  Day5::fixOrder(const std::unordered_map<int, std::unordered_set<int>>& rules, const std::vector<int>& update) {
         // Create a directed graph for the pages in the update
         std::unordered_map<int, int> inDegree;
@@ -74,7 +89,11 @@ std::vector<int>  Day5::fixOrder(const std::unordered_map<int, std::unordered_se
         return sortedOrder;
     }
 
-
+ /**
+ * @brief Rozwiązuje zadanie dnia 5 na podstawie pliku wejściowego.
+ * 
+ * @param filename Nazwa pliku wejściowego.
+ */
 void Day5::solveDay5(const std::string& filename)
 {
     auto [rules, updates] = InputParser::parseInputDay5(filename);

@@ -54,6 +54,7 @@
         "ratio": "cpp",
         "iomanip": "cpp",
         "regex": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "unordered_set": "cpp"
     }
 }

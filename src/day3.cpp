@@ -1,8 +1,8 @@
-
 #include "day3.hpp"
 #include <input_parser.hpp>
 #include <iostream>
-// Compute the sum of all valid multiplications
+
+// Oblicza sumę wszystkich poprawnych mnożeń
 int Day3::computeResult(const std::vector<std::pair<int, int>> &instructions) {
     int result = 0;
     for (const auto &[x, y] : instructions) {
@@ -11,6 +11,7 @@ int Day3::computeResult(const std::vector<std::pair<int, int>> &instructions) {
     return result;
 }
 
+// Rozwiązuje zadanie na podstawie pliku wejściowego
 void Day3::solve(const std::string& inputFile) {
         std::vector<std::pair<int, int>> instructions;
         std::vector<std::pair<int, int>> instructions2;

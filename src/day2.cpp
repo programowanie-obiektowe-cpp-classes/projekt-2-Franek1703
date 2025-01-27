@@ -3,7 +3,11 @@
 #include <input_parser.hpp>
 #include <iostream>
 
-// Check if current report is safe
+/**
+ * Sprawdza, czy dany raport jest bezpieczny.
+ * @param report Wektor liczb całkowitych reprezentujących raport.
+ * @return true, jeśli raport jest bezpieczny, w przeciwnym razie false.
+ */
 bool Day2::isSafeReport(const std::vector<int>& report) {
     if (report.empty()) return false;
 
@@ -27,6 +31,11 @@ bool Day2::isSafeReport(const std::vector<int>& report) {
     return increasing || decreasing;
 }
 
+/**
+ * Liczy liczbę bezpiecznych raportów.
+ * @param reports Wektor wektorów liczb całkowitych reprezentujących raporty.
+ * @return Liczba bezpiecznych raportów.
+ */
 int Day2::countSafeReports(const std::vector<std::vector<int>>& reports) {
     int safeCount = 0;
 
@@ -39,6 +48,11 @@ int Day2::countSafeReports(const std::vector<std::vector<int>>& reports) {
     return safeCount;
 }
 
+/**
+ * Sprawdza, czy dany raport jest bezpieczny po zastosowaniu Dampenera.
+ * @param report Wektor liczb całkowitych reprezentujących raport.
+ * @return true, jeśli raport jest bezpieczny po zastosowaniu Dampenera, w przeciwnym razie false.
+ */
 bool Day2::isSafeWithDampener(const std::vector<int>& report) {
     if (isSafeReport(report)) {
         return true; // Już bezpieczny bez modyfikacji
@@ -56,6 +70,11 @@ bool Day2::isSafeWithDampener(const std::vector<int>& report) {
     return false; // Nie da się naprawić usunięciem jednego poziomu
 }
 
+/**
+ * Liczy liczbę bezpiecznych raportów po zastosowaniu Dampenera.
+ * @param reports Wektor wektorów liczb całkowitych reprezentujących raporty.
+ * @return Liczba bezpiecznych raportów po zastosowaniu Dampenera.
+ */
 int Day2::countSafeReportsWithDampener(const std::vector<std::vector<int>>& reports) {
     int safeCount = 0;
 
@@ -68,6 +87,10 @@ int Day2::countSafeReportsWithDampener(const std::vector<std::vector<int>>& repo
     return safeCount;
 }
 
+/**
+ * Rozwiązuje zadanie dnia 2 na podstawie pliku wejściowego.
+ * @param inputFile Ścieżka do pliku wejściowego.
+ */
 void Day2::solveDay2(const std::string& inputFile) {
     InputParser parser;
     std::vector<std::vector<int>> reports;

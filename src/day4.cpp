@@ -5,19 +5,31 @@
 #include <stdexcept>
 #include <vector>
 
+/**
+ * @brief Rozwiązuje zadanie dnia 4.
+ * 
+ * @param inputFile Ścieżka do pliku wejściowego.
+ */
 void Day4::solveDay4(const std::string& inputFile) {
     std::vector<std::string> grid;
     InputParser::parseInputDay4(inputFile, grid);
 
-    // Part 1: Count all "XMAS"
+    // Część 1: Zlicz wszystkie wystąpienia "XMAS"
     int totalOccurrences = countWordInGrid(grid, "XMAS");
     std::cout << "Number of XMAS occurrences: " << totalOccurrences << std::endl;
 
-    // Part 2: Count all "X-MAS" patterns
+    // Część 2: Zlicz wszystkie wzorce "X-MAS"
     int totalXMASPatterns = findAllXMASPatterns(grid);
     std::cout << "Part 2: Number of X-MAS patterns: " << totalXMASPatterns << std::endl;
 }
 
+/**
+ * @brief Zlicza wystąpienia danego słowa w siatce.
+ * 
+ * @param grid Siatka znaków.
+ * @param word Słowo do zliczenia.
+ * @return int Liczba wystąpień słowa.
+ */
 int Day4::countWordInGrid(const std::vector<std::string>& grid, const std::string& word) {
     int totalCount = 0;
     int rows = grid.size();
@@ -38,6 +50,17 @@ int Day4::countWordInGrid(const std::vector<std::string>& grid, const std::strin
     return totalCount;
 }
 
+/**
+ * @brief Zlicza wystąpienia słowa w danym kierunku.
+ * 
+ * @param grid Siatka znaków.
+ * @param row Wiersz początkowy.
+ * @param col Kolumna początkowa.
+ * @param dx Kierunek w osi X.
+ * @param dy Kierunek w osi Y.
+ * @param word Słowo do zliczenia.
+ * @return int Liczba wystąpień słowa w danym kierunku.
+ */
 int Day4::countWordInDirection(const std::vector<std::string>& grid, int row, int col, int dx, int dy, const std::string& word) {
     int wordLength = word.size();
     int rows = grid.size();
@@ -54,6 +77,12 @@ int Day4::countWordInDirection(const std::vector<std::string>& grid, int row, in
     return 1;
 }
 
+/**
+ * @brief Zlicza wszystkie wzorce "X-MAS" w siatce.
+ * 
+ * @param grid Siatka znaków.
+ * @return int Liczba wzorców "X-MAS".
+ */
 int Day4::findAllXMASPatterns(const std::vector<std::string>& grid) {
     int totalCount = 0;
     int rows = grid.size();
@@ -71,32 +100,41 @@ int Day4::findAllXMASPatterns(const std::vector<std::string>& grid) {
     return totalCount;
 }
 
+/**
+ * @brief Sprawdza, czy dany wzorzec "X-MAS" jest poprawny.
+ * 
+ * @param grid Siatka znaków.
+ * @param row Wiersz początkowy.
+ * @param col Kolumna początkowa.
+ * @return true Jeśli wzorzec jest poprawny.
+ * @return false Jeśli wzorzec jest niepoprawny.
+ */
 bool Day4::isValidXMASPattern(const std::vector<std::string>& grid, int row, int col) {
-    // Check if the current cell is an 'A'
+    // Sprawdza, czy bieżąca komórka to 'A'
     if (grid[row][col] != 'A') {
         return false;
     }
 
-    
     int rows = grid.size();
     int cols = grid[0].size();
     if (row - 1 < 0 || row + 1 >= rows || col - 1 < 0 || col + 1 >= cols) {
         return false;
     }
 
-   
+    // Sprawdza lewy wzorzec "MAS" lub "SAM"
     bool leftMAS = (grid[row - 1][col - 1] == 'M' && grid[row + 1][col + 1] == 'S');
     bool leftSAM = (grid[row - 1][col - 1] == 'S' && grid[row + 1][col + 1] == 'M');
 
-    
+    // Sprawdza prawy wzorzec "MAS" lub "SAM"
     bool rightMAS = (grid[row - 1][col + 1] == 'M' && grid[row + 1][col - 1] == 'S');
     bool rightSAM = (grid[row - 1][col + 1] == 'S' && grid[row + 1][col - 1] == 'M');
 
-    
+    // Sprawdza, czy lewy wzorzec jest poprawny
     bool leftValid = leftMAS || leftSAM;
     
+    // Sprawdza, czy prawy wzorzec jest poprawny
     bool rightValid = rightMAS || rightSAM;
 
-    
+    // Zwraca true, jeśli oba wzorce są poprawne
     return leftValid && rightValid;
 }
