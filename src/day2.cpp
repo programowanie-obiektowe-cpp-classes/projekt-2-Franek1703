@@ -2,6 +2,8 @@
 #include <cmath>
 #include <input_parser.hpp>
 #include <iostream>
+#include <numeric>
+#include <algorithm>
 
 /**
  * Sprawdza, czy dany raport jest bezpieczny.
@@ -10,24 +12,31 @@
  */
 bool Day2::isSafeReport(const std::vector<int>& report) {
     if (report.empty()) return false;
-
-    bool increasing = true;
-    bool decreasing = true;
-
-    for (size_t i = 1; i < report.size(); ++i) {
-        int diff = report[i] - report[i - 1];
-
-        if (std::abs(diff) < 1 || std::abs(diff) > 3) {
-            return false;
-        }
-
-        if (diff > 0) {
-            decreasing = false;
-        } else if (diff < 0) {
-            increasing = false;
-        }
+    
+    // Obliczamy różnice między kolejnymi elementami.
+    std::vector<int> diffs(report.size() - 1);
+    std::transform(report.begin() + 1, report.end(), report.begin(), diffs.begin(),
+                   [](int current, int previous) {
+                       return current - previous;
+                   });
+    
+    // Sprawdzamy, czy każda różnica mieści się w przedziale [1,3] (w wartościach bezwzględnych).
+    if (!std::all_of(diffs.begin(), diffs.end(), [](int diff) {
+            return std::abs(diff) >= 1 && std::abs(diff) <= 3;
+        }))
+    {
+        return false;
     }
-
+    
+    // Raport jest bezpieczny, jeśli wszystkie różnice są dodatnie (ciąg rosnący)
+    // lub wszystkie są ujemne (ciąg malejący).
+    bool increasing = std::all_of(diffs.begin(), diffs.end(), [](int diff) {
+        return diff > 0;
+    });
+    bool decreasing = std::all_of(diffs.begin(), diffs.end(), [](int diff) {
+        return diff < 0;
+    });
+    
     return increasing || decreasing;
 }
 
@@ -37,15 +46,9 @@ bool Day2::isSafeReport(const std::vector<int>& report) {
  * @return Liczba bezpiecznych raportów.
  */
 int Day2::countSafeReports(const std::vector<std::vector<int>>& reports) {
-    int safeCount = 0;
-
-    for (const auto& report : reports) {
-        if (isSafeReport(report)) {
-            ++safeCount;
-        }
-    }
-
-    return safeCount;
+    return std::count_if(reports.begin(), reports.end(), [this](const std::vector<int>& report) {
+        return isSafeReport(report);
+    });
 }
 
 /**
@@ -58,16 +61,15 @@ bool Day2::isSafeWithDampener(const std::vector<int>& report) {
         return true; // Już bezpieczny bez modyfikacji
     }
 
-    for (size_t i = 0; i < report.size(); ++i) {
-        std::vector<int> modifiedReport = report;
-        modifiedReport.erase(modifiedReport.begin() + i); // Usuń jeden poziom
-
-        if (isSafeReport(modifiedReport)) {
-            return true; // Stał się bezpieczny po usunięciu poziomu
-        }
-    }
-
-    return false; // Nie da się naprawić usunięciem jednego poziomu
+    std::vector<size_t> indices(report.size());
+    std::iota(indices.begin(), indices.end(), 0);
+    
+    // Sprawdzamy, czy usunięcie któregokolwiek elementu uczyni raport bezpiecznym.
+    return std::any_of(indices.begin(), indices.end(), [&](size_t i) {
+        auto modifiedReport = report;
+        modifiedReport.erase(modifiedReport.begin() + i);
+        return isSafeReport(modifiedReport);
+    });
 }
 
 /**
@@ -76,15 +78,9 @@ bool Day2::isSafeWithDampener(const std::vector<int>& report) {
  * @return Liczba bezpiecznych raportów po zastosowaniu Dampenera.
  */
 int Day2::countSafeReportsWithDampener(const std::vector<std::vector<int>>& reports) {
-    int safeCount = 0;
-
-    for (const auto& report : reports) {
-        if (isSafeWithDampener(report)) {
-            ++safeCount;
-        }
-    }
-
-    return safeCount;
+     return std::count_if(reports.begin(), reports.end(), [this](const std::vector<int>& report) {
+        return isSafeWithDampener(report);
+    });
 }
 
 /**
@@ -97,12 +93,12 @@ void Day2::solveDay2(const std::string& inputFile) {
 
     // Wczytaj dane wejściowe
     parser.parseInput(inputFile, reports);
-
+    Day2 day2;
     // Policz bezpieczne raporty (część 1)
-    int safeCount = countSafeReports(reports);
+    int safeCount = day2.countSafeReports(reports);
     std::cout << "Number of safe reports: " << safeCount << std::endl;
 
     // Policz bezpieczne raporty z Dampenerem (część 2)
-    int safeCountWithDampener = countSafeReportsWithDampener(reports);
+    int safeCountWithDampener = day2.countSafeReportsWithDampener(reports);
     std::cout << "Number of safe reports with Dampener: " << safeCountWithDampener << std::endl;
 }

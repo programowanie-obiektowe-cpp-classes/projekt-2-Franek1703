@@ -6,6 +6,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <vector>
+#include <numeric>
 
 /// Funkcja do obliczania całkowitej odległości
 int Day1::computeTotalDistance(std::vector< int >& leftList, std::vector< int >& rightList)
@@ -13,12 +14,13 @@ int Day1::computeTotalDistance(std::vector< int >& leftList, std::vector< int >&
     std::sort(leftList.begin(), leftList.end());
     std::sort(rightList.begin(), rightList.end());
 
-    int totalDistance = 0;
-
-    for (size_t i = 0; i < leftList.size(); ++i)
-    {
-        totalDistance += std::abs(leftList[i] - rightList[i]);
-    }
+     int totalDistance = std::transform_reduce(
+        leftList.begin(), leftList.end(), 
+        rightList.begin(), 
+        0, 
+        std::plus<>(), 
+        [](int left, int right) { return std::abs(left - right); }
+    );
 
     return totalDistance;
 }
@@ -29,21 +31,16 @@ int calculateSimilarityScore(const std::vector< int >& leftList, const std::vect
     std::unordered_map< int, int > rightListCounts;
 
     // Zlicz wystąpienia każdej liczby w prawej liście
-    for (int num : rightList)
-    {
+    std::for_each(rightList.begin(), rightList.end(), [&](int num) {
         rightListCounts[num]++;
-    }
+    });
 
-    int similarityScore = 0;
 
     // Oblicz współczynnik podobieństwa, mnożąc liczbę przez jej liczbę wystąpień w prawej liście
-    for (int num : leftList)
-    {
-        if (rightListCounts.find(num) != rightListCounts.end())
-        {
-            similarityScore += num * rightListCounts[num];
-        }
-    }
+     int similarityScore = std::accumulate(leftList.begin(), leftList.end(), 0, [&](int sum, int num) {
+        auto it = rightListCounts.find(num);
+        return sum + (it != rightListCounts.end() ? num * it->second : 0);
+    });
 
     return similarityScore;
 }

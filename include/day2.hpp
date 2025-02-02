@@ -7,9 +7,9 @@
 class Day2 {
 public:
     static void solveDay2(const std::string& inputFile);
-    static int countSafeReports(const std::vector<std::vector<int>>& reports);
+    int countSafeReports(const std::vector<std::vector<int>>& reports);
     static bool isSafeReport(const std::vector<int>& report);
-    static int countSafeReportsWithDampener(const std::vector<std::vector<int>>& reports);
+    int countSafeReportsWithDampener(const std::vector<std::vector<int>>& reports);
     static bool isSafeWithDampener(const std::vector<int>& report);
 };
 
