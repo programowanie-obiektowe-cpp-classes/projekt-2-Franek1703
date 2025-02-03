@@ -20,22 +20,18 @@ bool Day2::isSafeReport(const std::vector<int>& report) {
                        return current - previous;
                    });
     
-    // Sprawdzamy, czy każda różnica mieści się w przedziale [1,3] (w wartościach bezwzględnych).
-    if (!std::all_of(diffs.begin(), diffs.end(), [](int diff) {
-            return std::abs(diff) >= 1 && std::abs(diff) <= 3;
+    // Sprawdzamy, czy każda różnica mieści się w przedziale [1,3] (w wartościach bezwzględnych)
+    // oraz czy wszystkie różnice są dodatnie (ciąg rosnący) lub wszystkie są ujemne (ciąg malejący).
+    bool increasing = true, decreasing = true;
+    if (!std::all_of(diffs.begin(), diffs.end(), [&](int diff) {
+            if (std::abs(diff) < 1 || std::abs(diff) > 3) return false;
+            if (diff <= 0) increasing = false;
+            if (diff >= 0) decreasing = false;
+            return true;
         }))
     {
         return false;
     }
-    
-    // Raport jest bezpieczny, jeśli wszystkie różnice są dodatnie (ciąg rosnący)
-    // lub wszystkie są ujemne (ciąg malejący).
-    bool increasing = std::all_of(diffs.begin(), diffs.end(), [](int diff) {
-        return diff > 0;
-    });
-    bool decreasing = std::all_of(diffs.begin(), diffs.end(), [](int diff) {
-        return diff < 0;
-    });
     
     return increasing || decreasing;
 }
