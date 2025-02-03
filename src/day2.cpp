@@ -13,27 +13,23 @@
 bool Day2::isSafeReport(const std::vector<int>& report) {
     if (report.empty()) return false;
     
-    // Obliczamy różnice między kolejnymi elementami.
-    std::vector<int> diffs(report.size() - 1);
-    std::transform(report.begin() + 1, report.end(), report.begin(), diffs.begin(),
-                   [](int current, int previous) {
-                       return current - previous;
-                   });
-    
-    // Sprawdzamy, czy każda różnica mieści się w przedziale [1,3] (w wartościach bezwzględnych)
-    // oraz czy wszystkie różnice są dodatnie (ciąg rosnący) lub wszystkie są ujemne (ciąg malejący).
+    bool valid = true;
     bool increasing = true, decreasing = true;
-    if (!std::all_of(diffs.begin(), diffs.end(), [&](int diff) {
-            if (std::abs(diff) < 1 || std::abs(diff) > 3) return false;
-            if (diff <= 0) increasing = false;
-            if (diff >= 0) decreasing = false;
-            return true;
-        }))
-    {
-        return false;
-    }
     
-    return increasing || decreasing;
+    std::adjacent_find(report.begin(), report.end(), [&](int a, int b) {
+        int diff = b - a;
+        if (std::abs(diff) < 1 || std::abs(diff) > 3) {
+            valid = false;
+            return true;
+        }
+        if (diff > 0)
+            decreasing = false;
+        else if (diff < 0)
+            increasing = false;
+        return false;
+    });
+    
+    return valid && (increasing || decreasing);
 }
 
 /**
